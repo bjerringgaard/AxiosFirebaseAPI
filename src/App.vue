@@ -15,6 +15,7 @@
       <p>Name: {{product.name}}</p>
       <p>Description: {{product.description}}</p>
       <p>Price: {{product.price}}</p>
+      <button v-on:click="deleteProduct(product.id)">X</button>
       </li> 
       </div>
     </ul>
@@ -57,6 +58,14 @@ methods: {
     this.productDescription = '';
     this.productPrice = '';
   },
+
+  deleteProduct(id) {
+    axios.delete("https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/delete/" + id)
+    .then(() => {
+      console.log("Deleted!!!")
+      window.location.reload()
+    })
+  }
 }
 
 };
