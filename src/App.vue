@@ -9,25 +9,27 @@
   </div>
 
     <ul>
-      <div v-for="product of products" :key="product.id" id="controller">
+      <div id="centerdiv">
+        <div v-for="product of products" :key="product.id" id="controller">
 
-        <div v-if="editProduct === product.id">
-          <input v-model="product.name">
-          <input v-model="product.description">
-          <input v-model="product.price">
-          <button v-on:click="updateProduct(product)" id="save-btn"><i class="fa fa-check" aria-hidden="true"></i></button>
-        </div>     
+          <div v-if="editProduct === product.id">
+            <input v-model="product.name">
+            <input v-model="product.description">
+            <input v-model="product.price">
+            <button v-on:click="updateProduct(product)" id="save-btn"><i class="fa fa-check" aria-hidden="true"></i></button>
+          </div>     
 
-        <div v-else>
-        <li>
-        <p>ID: {{product.id}}</p>
-        <p>Name: {{product.name}}</p>
-        <p>Description: {{product.description}}</p>
-        <p>Price: {{product.price}}</p>
-        <button v-on:click="deleteProduct(product.id)" id="del-btn"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        <button v-on:click="editProduct = product.id" id="edit-btn"><i class="fa fa-wrench" aria-hidden="true"></i></button>
-        </li> 
-        </div>
+          <div v-else>
+          <li>
+          <p>ID: {{product.id}}</p>
+          <p>Name: {{product.name}}</p>
+          <p>Description: {{product.description}}</p>
+          <p>Price: {{product.price}}</p>
+          <button v-on:click="deleteProduct(product.id)" id="del-btn"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <button v-on:click="editProduct = product.id" id="edit-btn"><i class="fa fa-wrench" aria-hidden="true"></i></button>
+          </li> 
+          </div>
+          </div>
 
       </div>
     </ul>
@@ -112,12 +114,19 @@ li {
   list-style: none;
   align-items: center;
   align-self: center;
-  margin: 20px auto;
+  margin: 20px; 
   text-align: left; 
+  flex-wrap: wrap;
 }
 
 ul {
-  display: flex;  
+  padding: 0;
+  margin: 0 auto;
+  display: flex;
+  width: 90vw;
+  flex-wrap: wrap;
+  align-items: center;
+  /*justify-content: center;  */ 
 }
 
 #textfield {
@@ -131,7 +140,6 @@ ul {
 }
 
 input {
-  margin-left: 5%; 
   height: 50px;
   /* border-radius: 30px; */
   align-content: center;
@@ -156,27 +164,26 @@ input:focus{
 
 #controller {
   width: fit-content;
-  min-width: 20vw;
-  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 20px;
   display: flex;
   flex-direction: row;
-  align-content: center;
-  align-items: center;
   background: white;
   border-radius: 30px;
-  padding-left: 30px;
+  /*padding-left: 30px; */
+  flex-wrap: wrap;
 }
 
 #add-btn {
 height: 50px;
-width: 95%;
+width: 100%;
 border: none;
 background: #2ecc71;
 color: white;
 border-bottom-left-radius: 30px;
 border-bottom-right-radius: 30px;
 font-size: 16px;
-margin-left: 5%; 
 margin-bottom: 50px;
 }  
 
@@ -210,6 +217,16 @@ margin-bottom: 50px;
   color: white;
   border: none;
   margin-left: 10px;
+}
+
+#centerdiv {
+  display: flex;  
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: center;
+  
+
 }
 
 </style>
