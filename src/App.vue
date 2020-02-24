@@ -26,7 +26,7 @@ import axios from 'axios';
 
 const readURL = "https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/read";
 const addURL = "https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/create";
-/* const deleteURL ="https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/delete/${id}"; */
+/* const deleteURL ="https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/delete/"; */
 
 export default {
   name: 'App',
