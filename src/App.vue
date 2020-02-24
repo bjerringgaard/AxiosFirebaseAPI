@@ -5,18 +5,30 @@
     <input type="text" v-model="productName" placeholder="Name"/>
     <input type="text" v-model="productDescription" placeholder="Description"/>
     <input type="number" v-model="productPrice" placeholder="Price"/>
-    <button @click="addProduct">Add</button>
+    <button @click="addProduct" id="add-btn">Add</button>
   </div>
 
     <ul>
       <div v-for="product of products" :key="product.id" id="controller">
-      <li>
-      <p>ID: {{product.id}}</p>
-      <p>Name: {{product.name}}</p>
-      <p>Description: {{product.description}}</p>
-      <p>Price: {{product.price}}</p>
-      <button v-on:click="deleteProduct(product.id)">X</button>
-      </li> 
+
+        <div v-if="editProduct === product.id">
+          <input v-model="product.name">
+          <input v-model="product.description">
+          <input v-model="product.price">
+          <button v-on:click="updateProduct(product)" id="save-btn"><i class="fa fa-check" aria-hidden="true"></i></button>
+        </div>     
+
+        <div v-else>
+        <li>
+        <p>ID: {{product.id}}</p>
+        <p>Name: {{product.name}}</p>
+        <p>Description: {{product.description}}</p>
+        <p>Price: {{product.price}}</p>
+        <button v-on:click="deleteProduct(product.id)" id="del-btn"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        <button v-on:click="editProduct = product.id" id="edit-btn"><i class="fa fa-wrench" aria-hidden="true"></i></button>
+        </li> 
+        </div>
+
       </div>
     </ul>
   </div>
@@ -33,9 +45,8 @@ export default {
   name: 'App',
   data() {
     return {
-      products: [
-       
-      ]
+      products: [],
+      editProduct: null,
     };
   },
   async created() {
@@ -47,27 +58,39 @@ export default {
       console.error(e);
     }
   },
-methods: {
-  async addProduct(){
-    const res = await axios.post(addURL, {name: this.productName, description: this.productDescription, price: this.productPrice, id: this.productID});
-  
-    this.products = [...this.products, res.data];
+  methods: {
+    async addProduct(){
+      const res = await axios.post(addURL, {name: this.productName, description: this.productDescription, price: this.productPrice, id: this.productID});
+    
+      this.products = [...this.products, res.data];
 
-    this.productID = '';
-    this.productName = '';
-    this.productDescription = '';
-    this.productPrice = '';
-  },
+      this.productID = '';
+      this.productName = '';
+      this.productDescription = '';
+      this.productPrice = '';
+    },
 
-  deleteProduct(id) {
-    axios.delete("https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/delete/" + id)
-    .then(() => {
-      console.log("Deleted!!!")
-      window.location.reload()
-    })
+    deleteProduct(id) {
+      axios.delete("https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/delete/" + id)
+      .then(() => {
+        window.location.reload()
+      })
+    },
+
+    updateProduct(product) {
+      fetch("https://us-central1-firstrestapi-25944.cloudfunctions.net/app/api/update/" + product.id,
+      {
+        body: JSON.stringify(product),
+        method: "PUT",
+        headers: {
+          "content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        this.editProduct = null;
+      })
+    }
   }
-}
-
 };
 </script>
 
@@ -131,19 +154,6 @@ input:focus{
       outline: none;
   }
 
-button {
-height: 50px;
-width: 95%;
-border: none;
-background: #2ecc71;
-color: white;
-border-bottom-left-radius: 30px;
-border-bottom-right-radius: 30px;
-font-size: 16px;
-margin-left: 5%; 
-margin-bottom: 100px;
-}  
-
 #controller {
   width: fit-content;
   min-width: 20vw;
@@ -154,7 +164,52 @@ margin-bottom: 100px;
   align-items: center;
   background: white;
   border-radius: 30px;
-  
+  padding-left: 30px;
+}
+
+#add-btn {
+height: 50px;
+width: 95%;
+border: none;
+background: #2ecc71;
+color: white;
+border-bottom-left-radius: 30px;
+border-bottom-right-radius: 30px;
+font-size: 16px;
+margin-left: 5%; 
+margin-bottom: 50px;
+}  
+
+#del-btn {
+  height: 50px;
+  width: 50px;
+  border-radius: 15px;
+  background: red;
+  font-size: 16px;
+  color: white;
+  border: none;
+}
+
+#edit-btn {
+  height: 50px;
+  width: 150px;
+  border-radius: 15px;
+  background: #2ecc71;
+  font-size: 16px;
+  color: white;
+  border: none;
+  margin-left: 10px;
+}
+
+#save-btn {
+  height: 50px;
+  width: 100%;
+  border-radius: 15px;
+  background: #2c82c9;
+  font-size: 16px;
+  color: white;
+  border: none;
+  margin-left: 10px;
 }
 
 </style>
